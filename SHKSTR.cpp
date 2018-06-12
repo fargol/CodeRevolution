@@ -2,70 +2,110 @@
 using namespace std;
 #define endl '\n';
 typedef pair<int, int> ii; typedef vector<ii> vii;
-string LCP(string s1,string s2){
-	string Lcp="";
-	int l=min(s1.length(),s2.length());
-	for(int j=0;j<l;j++){
-		if(s1[j]==s2[j])
-			Lcp+=s1[j];
-		else
-			break;
-	}
-	return Lcp;
+typedef struct node{
+	string ch;
+	node* alpha[26];
+	bool end;
+}NODE;
+typedef NODE* NODEPTR;
+
+void setNODE(NODEPTR node){
+	node->ch='\0';
+	for(int i=0;i<26;i++)
+		node->alpha[i]=NULL;
+	node->end=false;
 }
-void bs(int low,int high, int id, string query, string arr){
-	int mid;
-	while(low<=high){
-		mid=(low+high)/2;
-		while(id<query.length()&&id<arr[mid].length()){
-			if(arr[mid][id]==a)
+
+void insert(NODEPTR root,string str){
+	for(int i=0;i<str.length();i++){
+		if(root->alpha[str[i]-'a']==NULL){
+			root->alpha[str[i]-'a']=(NODEPTR)malloc(sizeof(NODE));
+			setNODE(root->alpha[str[i]-'a']);
+			root->alpha[str[i]-'a']->ch=str[i];
 		}
+		root=root->alpha[str[i]-'a'];
 	}
+	root->end=true;
 }
+
 int main(){
 	//vector<vii> AdjList;
 	//vector< pair<int, ii> > EdgeList;
-	ios::sync_with_stdio(false);
-	int N,Q,R,maxl;
+	//ios::sync_with_stdio(false);
+	int N,Q;
 	cin>>N;
-	//cout<<"★"<<endl;
-	int count[100010];
-	string arr[100010];
-	string lcp[100010];
-	string query,Lcp,ans;
-	cin>>arr[1];
-	//lcp[1]=arr[1];
-	for(int i=2;i<=N;i++){
+	vector<string> arr(N);
+	
+	NODEPTR root=(NODEPTR)malloc(sizeof(NODE));
+	setNODE(root);
+
+	for(int i=0;i<N;i++){
 		cin>>arr[i];
-		//lcp[i]=LCP(arr[i],lcp[i-1]);
+		//insert(root,arr[i]);
 	}
+	/*cout<<"\nArr = \n";
+	for(int i=0;i<N;i++)
+		cout<<arr[i]<<endl;*/
+
 	cin>>Q;
-	for(int i=1;i<=Q;i++){
-		cin>>R>>query;
-		//Lcp=LCP(lcp[R],query);
-		sort(arr+1,arr+R+1);
-		int low=1,high=R,mid,id=0;
-		while(low<=high){
-			mid=(low+high)/2;
-			while(id<query.length()&&id<arr[mid].length()){
-				if(query[id]==arr[mid][id])
-					id++;
-				else
-					break;
+	//cout<<"\nQ = "<<Q<<endl;
+	vector<tuple<int,string,int> > queries(Q);
+	vector<string> answers(Q);
+	int range,index;
+	string word;
+	for(int i=0;i<Q;i++){
+		cin>>range>>word;
+		range--;
+		queries[i]=make_tuple(range,word,i);
+	}
+	sort(queries.begin(),queries.end());
+
+	/*cout<<"Sorted Queries:- \n";
+	for(int i=0;i<Q;i++)
+		cout<<get<0>(queries[i])<<" "<<get<1>(queries[i])<<endl;*/
+
+	int initial=0;
+	NODEPTR current;
+	for(int i=0;i<Q;i++){
+		current=root;
+		string ans="";
+		range=get<0>(queries[i]);
+		word=get<1>(queries[i]);
+		index=get<2>(queries[i]);
+
+		//cout<<"\nrange = \n"<<range<<endl;
+		//cout<<"\ninitial = \n"<<initial<<endl;
+		//if(i==2)
+			//break;
+		for(int j=initial;j<=range;j++){
+			//cout<<"INSERTED WORD = "<<arr[j]<<endl;
+			insert(root,arr[j]);
+		}
+		initial=range+1;
+		for(int j=0;j<word.length();j++){
+			//cout<<"\nchar = "<<current->ch<<endl;
+			if(current->alpha[word[j]-'a']==NULL){
+				//cout<<"here1\n";
+				break;
 			}
-			if(id<query.length()){
-				if(id<arr[mid-1].length()){
-					if(mid>1&&arr[mid-1][id]>=query[id])
-						high=mid-1;
-					else if(mid<R&&arr[mid+1][id]==query[id])
-						low=mid+1;
-					else{
-						ans=mid;
-						break;
-					}
-				}
+			else{
+				//cout<<"here2\n";
+				current=current->alpha[word[j]-'a'];
+				ans+=current->ch;
 			}
 		}
-		cout<<ans<<endl;
+		while(current->end==false){
+			int k=0;
+			while(current->alpha[k]==NULL&&k<26)
+				k++;
+			if(k<26){
+				current=current->alpha[k];
+				ans+=current->ch;
+			}
+		}
+		//cout<<"\nans = "<<ans<<endl
+		answers[index]=ans;
 	}
+	for(int i=0;i<Q;i++)
+		cout<<answers[i]<<endl;
 }
