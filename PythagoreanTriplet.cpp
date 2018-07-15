@@ -11,23 +11,29 @@ int main(){
 	while(T--){
 		cin>>N;
 		vector<int> arr(N);
-		for(int &i:arr)
+		for(int &i:arr){
 			cin>>i;
+			i*=i;
+		}
 		sort(arr.begin(),arr.end());
+		/*for(int &i:arr)
+			cout<<i<<" ";
+		cout<<endl;*/
 		bool flag=false;
-		for(int i=0;i<N-2;i++){
-			for(int j=i+1;j<N-1;j++){
-				for(int k=j+1;k<N;k++){
-					a=pow(arr[i],2);
-					b=pow(arr[j],2);
-					c=pow(arr[k],2);
-					if(a+b==c){
-						flag=true;
-						break;
-					}
-				}
-				if(flag)
+		for(int i=N-1;i>=0;i--){
+			c=arr[i];
+			int j=0,k=i-1;
+			while(j<k){
+				a=arr[j];
+				b=arr[k];
+				if(a+b==c){
+					flag=true;
 					break;
+				}
+				else if(a+b<c)
+					j++;
+				else
+					k--;
 			}
 			if(flag)
 				break;
