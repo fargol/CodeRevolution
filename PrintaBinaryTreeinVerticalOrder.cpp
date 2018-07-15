@@ -77,26 +77,28 @@ struct Node
 }; */
 /* Should print vertical order such that each vertical line
    is separated by $ */
-void preorder(Node* root,vector<pair<int,int> > &dist,int d){
+void preorder(Node* root,map<int,vector<int> > &mp,int d,int &min_d,int &max_d){
     if(root!=NULL){
-        dist.push_back(make_pair(d,root->data));
-        preorder(root->left,dist,d-1);
-        preorder(root->right,dist,d+1);
+        if(min_d>d)
+            min_d=d;
+        if(max_d<d)
+            max_d=d;
+        mp[d].push_back(root->data);
+        preorder(root->left,mp,d-1,min_d,max_d);
+        preorder(root->right,mp,d+1,min_d,max_d);
     }
 }
 void verticalOrder(Node *root)
 {
     //Your code here
-    vector<pair<int,int> > dist;
-    preorder(root,dist,0);
-    sort(dist.begin(),dist.end());
+    int min_d=INT_MAX,max_d=INT_MIN;
+    map<int,vector<int> > mp;
+    preorder(root,mp,0,min_d,max_d);
+    //sort(dist.begin(),dist.end());
     int i;
-    for(i=0;i<dist.size()-1;i++){
-        if(dist[i].first==dist[i+1].first)
-            cout<<dist[i].second<<" ";
-        else
-            cout<<dist[i].second<<" $";
+    for(i=min_d;i<=max_d;i++){
+        for(int j=0;j<mp[i].size();j++)
+            cout<<mp[i][j]<<" ";
+        cout<<'$';
     }
-    cout<<dist[i].second<<" $";
-    cout<<endl;
 }
