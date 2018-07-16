@@ -127,13 +127,14 @@ void removeTheLoop(Node *node)
      //Your code here
      Node *head=node;
      Node *curr=head,*prev=head;
-     vector<bool> visited(1000000,false);
-     while(curr!=NULL&&!visited[curr->data]){
-        visited[curr->data]=true;
+     //vector<bool> visited(1000000,false);
+     unordered_map<Node*,bool> visited; 
+     while(curr!=NULL&&!visited[curr]){
+        visited[curr]=true;
         prev=curr;
         curr=curr->next;
      }
-     if(curr!=NULL&&visited[curr->data]){
+     if(curr!=NULL&&visited[curr]){
         prev->next=NULL;
         //cout<<1<<endl;
     }
