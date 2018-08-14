@@ -6,40 +6,31 @@ int main(){
 	//vector<vii> AdjList;
 	//vector< pair<int, ii> > EdgeList;
 	ios::sync_with_stdio(true);
-	int T,N;
-	int arr[1000];
-	int dp[1000],dpMax[1000],dpMin[1000];
-	int maxl;
+	int T,N,e,c;
 	cin>>T;
+	int arr[1000];
 	while(T--){
 		cin>>N;
+		unordered_map<int,int> ump;
 		for(int i=0;i<N;i++){
 			cin>>arr[i];
-		}
-		dp[0]=1;
-		dpMax[0]=dpMin[0]=arr[0];
-		maxl=dp[0];
-		for(int i=1;i<N;i++){
-			dp[i]=1;
-			dpMax[i]=dpMin[i]=arr[i];
-			for(int j=0;j<i;j++){
-				if(abs(dpMax[j]-arr[i])==1||abs(dpMin[j]-arr[i])==1){
-					if(dp[i]<dp[j]+1){
-						dp[i]=dp[j]+1;
-						if(arr[i]<dpMin[j])
-							dpMin[i]=arr[i];
-						else
-							dpMin[i]=dpMin[j];
-						if(arr[i]>dpMax[j])
-							dpMax[i]=arr[i];
-						else
-							dpMax[i]=dpMax[j];
-					}
+			ump[arr[i]]=1;
+		} 
+		int max=1;
+		for(int i=0;i<N;i++){
+			if(ump.find(arr[i]-1)==ump.end()){
+				//cout<<"arr[i] = "<<arr[i]<<" ";
+				e=arr[i]+1;
+				c=1;
+				while(ump.find(e)!=ump.end()){
+					e++;
+					c++;
 				}
+				if(max<c)
+					max=c;
 			}
-			if(maxl<dp[i])
-				maxl=dp[i];
 		}
-		cout<<maxl<<endl;
+		//cout<<endl;
+		cout<<max<<endl;
 	}		
 }
