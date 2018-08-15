@@ -25,7 +25,7 @@ int wildCard(string pattern,string str)
 	int dp[lp+1][lstr+1];
 	dp[0][0]=1;
 	for(int i=1;i<=lstr;i++){
-		dp[0][i]=1;
+		dp[0][i]=0;
 	}
 	for(int j=1;j<=lp;j++){
 		if(pattern[j-1]=='*')
