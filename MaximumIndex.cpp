@@ -6,30 +6,25 @@ int main(){
 	//vector<vii> AdjList;
 	//vector< pair<int, ii> > EdgeList;
 	ios::sync_with_stdio(false);
-	int T,N,i,j,k,maxdiff,temp;
+	int T,N,min,max_diff;
 	cin>>T;
-	int arr[1000];
-	char sign[999];
 	while(T--){
 		cin>>N;
-		cin>>arr[0];
-		maxdiff=0;
-		for(i=1;i<N;i++){
-			cin>>arr[i];
-			/*if(arr[i]>arr[i-1])
-				sign[i-1]='l';
-			else if(arr[i]<arr[i-1])
-				sign[i-1]='g';
-			else
-				sign[i-1]='e';*/
+		vector<pair<int,int> > arr(N);
+		for(int i=0;i<N;i++){
+			cin>>arr[i].first;
+			arr[i].second=i;
 		}
-		for(i=0;i<N;i++){
-			for(j=N-1;j>=i;j--){
-				temp=j-i;
-				if(arr[j]>=arr[i]&&maxdiff<temp)
-					maxdiff=temp;
+		sort(arr.begin(),arr.end());
+		min=INT_MAX;
+		max_diff=INT_MIN;
+		for(int i=0;i<N;i++){
+			if(min>arr[i].second){
+				min=arr[i].second;
 			}
+			if(arr[i].second-min>max_diff)
+				max_diff=arr[i].second-min;
 		}
-		cout<<maxdiff<<endl;
+		cout<<max_diff<<endl;
 	}
 }
