@@ -1,5 +1,3 @@
-{
-//Code by 1shubhamjoshi1
 #include<bits/stdc++.h>
 using namespace std;
 struct Node {
@@ -50,9 +48,6 @@ int main()
         cout<<LCA(root,l,r)->data<<endl;
     }
 }
-
-}
-
 /*Please note that it's Function problem i.e.
 you need to write your solution in the form of Function(s) only.
 Driver Code to call/invoke your function is mentioned above.*/
