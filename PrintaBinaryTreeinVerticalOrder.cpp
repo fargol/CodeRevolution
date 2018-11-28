@@ -26,14 +26,12 @@ int main()
 {
   int t;
   struct Node *child;
-  scanf("%d
-", &t);
+  scanf("%d", &t);
   while (t--)
   {
      map<int, Node*> m;
      int n;
-     scanf("%d
-",&n);
+     scanf("%d",&n);
      struct Node *root = NULL;
      while (n--)
      {
@@ -77,28 +75,21 @@ struct Node
 }; */
 /* Should print vertical order such that each vertical line
    is separated by $ */
-void preorder(Node* root,map<int,vector<int> > &mp,int d,int &min_d,int &max_d){
+void preorder(Node* root,map<int,vector<int> > &mp,int dist){
     if(root!=NULL){
-        if(min_d>d)
-            min_d=d;
-        if(max_d<d)
-            max_d=d;
-        mp[d].push_back(root->data);
-        preorder(root->left,mp,d-1,min_d,max_d);
-        preorder(root->right,mp,d+1,min_d,max_d);
+        mp[dist].push_back(root->data);
+        preorder(root->left,mp,dist-1);
+        preorder(root->right,mp,dist+1);
     }
 }
 void verticalOrder(Node *root)
 {
     //Your code here
-    int min_d=INT_MAX,max_d=INT_MIN;
-    map<int,vector<int> > mp;
-    preorder(root,mp,0,min_d,max_d);
-    //sort(dist.begin(),dist.end());
-    int i;
-    for(i=min_d;i<=max_d;i++){
-        for(int j=0;j<mp[i].size();j++)
-            cout<<mp[i][j]<<" ";
-        cout<<'$';
+    map<int,vector<int> > hm;
+    preorder(root,hm,0);
+    for(auto i=hm.begin();i!=hm.end();i++){
+      for(int j=0;j<i->second.size();j++)
+        cout<<i->second[j]<<" ";
     }
+    cout<<endl;
 }
