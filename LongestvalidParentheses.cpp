@@ -8,19 +8,24 @@ int main(){
 	string S;
 	while(T--){
 		cin>>S;
-		stack<char> brac;
-		brac.push(-1);
-		maxl=INT_MIN;
+		stack<pair<char,int> > brac;
+		brac.push(make_pair(')',-1));
+		maxl=0;
 		for(int i=0;i<S.length();i++){
-			if(S[i]=='(')
-				brac.push(i);
+			//cout<<"i = "<<i<<endl;
+			if(S[i]=='('){
+				brac.push(make_pair('(',i));
+			}
 			else{
-				brac.pop();
-				if(!brac.empty()){
-					maxl=max(i-brac.top(),maxl);
+				if(!brac.empty()&&brac.top().first=='('){
+					brac.pop();
+					if(!brac.empty()){
+						maxl=max(maxl,i-brac.top().second);
+					}
 				}
-				else
-					brac.push(i);
+				else{
+					brac.push(make_pair(')',i));
+				}
 			}
 		}
 		cout<<maxl<<endl;
