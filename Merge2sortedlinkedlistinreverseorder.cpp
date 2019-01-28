@@ -83,58 +83,31 @@ struct Node * mergeResult(Node *node1,Node *node2)
     Node *ptr1=node1,*ptr2=node2,*headFinal=NULL,*curr=NULL;
     while(ptr1!=NULL&&ptr2!=NULL){
         if(ptr1->data<ptr2->data){
-            if(headFinal==NULL){
-                headFinal=ptr1;
-                curr=headFinal;
-            }
-            else{
-                curr->next=ptr1;
-                curr=curr->next;
-            }
+            Node *temp=ptr1;
             ptr1=ptr1->next;
+            temp->next=curr;
+            curr=temp;
         }
         else{
-            if(headFinal==NULL){
-                headFinal=ptr2;
-                curr=headFinal;
-            }
-            else{
-                curr->next=ptr2;
-                curr=curr->next;
-            }
+            Node *temp=ptr2;
             ptr2=ptr2->next;
+            temp->next=curr;
+            curr=temp;
         }
     }
     while(ptr1!=NULL){
-        curr->next=ptr1;
-        curr=curr->next;
+        Node *temp=ptr1;
         ptr1=ptr1->next;
-    }
-    while(ptr2!=NULL){
-        curr->next=ptr2;
-        curr=curr->next;
-        ptr2=ptr2->next;
-    }
-    curr->next=NULL;
-
-    curr=headFinal;
-    // cout<<"Merged List = ";
-    // while(curr!=NULL){
-    //     cout<<curr->data<<" -> ";
-    //     curr=curr->next;
-    // }
-    // cout<<endl;
-    curr=headFinal->next;
-    Node *prev=headFinal;
-    prev->next=NULL;
-    while(curr!=NULL){
-        Node *temp=curr->next;
-        if(temp==NULL){
-            headFinal=curr;
-        }
-        curr->next=prev;
-        prev=curr;
+        temp->next=curr;
         curr=temp;
     }
+    while(ptr2!=NULL){
+        Node *temp=ptr2;
+        ptr2=ptr2->next;
+        temp->next=curr;
+        curr=temp;
+    }
+    headFinal=curr;
+    curr=headFinal;
     return headFinal;
 }
